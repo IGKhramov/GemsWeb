@@ -2,7 +2,7 @@
     <v-data-table
       :headers= "headers"
       :items="this.$store.state.jobs"
-      v-model="selectedJob"
+      v-model="selectedJobs"
       :loading="loading"
       loading-text="Loading... Please Wait"
       dense
