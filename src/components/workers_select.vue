@@ -1,6 +1,6 @@
 <template>
     <v-container fluid>
-        <v-row align="left" >
+        <v-row align="start" >
         <v-col cols="3">
             <v-select
                 :items="workers"

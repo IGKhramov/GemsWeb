@@ -29,8 +29,14 @@
     </v-app-bar>
 
     <v-main>
-        <WorkerSelect/>
-        <JobList/>
+        <v-container>
+            <v-row>
+                <WorkerSelect/>
+            </v-row>
+            <v-row>
+            <JobList/>
+                </v-row>
+        </v-container>
     </v-main>
   </v-app>
 </template>
