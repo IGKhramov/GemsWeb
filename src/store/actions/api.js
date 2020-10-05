@@ -2,7 +2,9 @@ export const apiUrl = process.env.GEMS_API_URL || "https://us.navalclash.com/";
 const clientId = process.env.GEMS_CLIENT_ID;
 const clientKey = process.env.GEMS_CLIENT_SECRET;
 
-let auth = {};
+let auth = {
+    loggedIn: false
+};
 
 export async function apiCall(url, { body, searchParams, headers } = {}, method='GET') {
     let params = {
@@ -23,9 +25,12 @@ export async function apiCall(url, { body, searchParams, headers } = {}, method=
 export async function apiLogin(email, password) {
     let data = `grant_type=password&client_id=${clientId}&client_secret=${clientKey}&username=${email}&password=${password}`;
     let token = await apiCall(apiUrl+'auth/login', {body: data, headers: {'Content-Type': 'application/x-www-form-urlencoded'}}, 'POST');
-    if(token) {
-        auth.bearer = token.access_token ? token.access_token : auth.bearer;
-        auth.expiresAt = token.expires_in ? new Date(Date.now() + token.expires_in*1000) : auth.expiresAt;
+    if(token && token.access_token) {
+        auth.bearer = token.access_token;
+        auth.expiresAt = new Date(Date.now() + token.expires_in*1000);
+        auth.loggedIn = true;
+    } else {
+        auth.loggedIn = false;
     }
 
     console.log("AUTH", auth);
