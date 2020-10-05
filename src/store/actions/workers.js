@@ -31,5 +31,5 @@ function processGetWorkers(result, commit) {
 
 
 export async function getWorkers({commit}) {
-    return apiCall(apiUrl+'workers').then(response => processGetWorkers(response, commit));
+    return apiCall(apiUrl+'oldsdb/workers').then(response => processGetWorkers(response, commit));
 }

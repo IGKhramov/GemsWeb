@@ -29,6 +29,6 @@ function processGetJobs(result, state, commit) {
 
 
 export async function getJobs({commit, state}) {
-    return apiCall(apiUrl+'jobs', {searchParams: {workerid: state.currentWorker.id}})
+    return apiCall(apiUrl+'oldsdb/jobs', {searchParams: {workerid: state.currentWorker.id}})
         .then(response => processGetJobs(response, state, commit));
 }
