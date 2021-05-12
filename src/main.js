@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
+import router from './router/router'
 import vuetify from './plugins/vuetify';
-import {gemStore} from "./store/gemstore";
+import {store} from "./store";
+
 
 Vue.config.productionTip = false
 
@@ -10,10 +12,8 @@ Vue.prototype.$colors = require('./js/colors.json');
 
 new Vue({
   vuetify,
-  store: gemStore,
+  router,
+  store: store,
   render: h => h(App)
 }).$mount('#app')
 
-
-
-//Time spent in the office [Color Not set] fvfvfdf

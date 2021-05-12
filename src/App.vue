@@ -1,5 +1,6 @@
 <template>
   <v-app>
+
     <v-app-bar
       app
       color="primary"
@@ -28,27 +29,40 @@
       </v-btn>
     </v-app-bar>
 
+
     <v-main>
-        <v-container>
+        <p>
+        <router-link to="/foo">Go to Foo</router-link>
+         <router-link to="/bar">Go to Bar</router-link>
+         <router-link to="/login">Logout</router-link>
+      </p>
+    <router-view></router-view>
+
+
+<!--      <v-container>
             <v-row>
                 <WorkerSelect/>
             </v-row>
             <v-row>
             <JobList/>
                 </v-row>
-        </v-container>
+        </v-container>  -->
     </v-main>
+
+
+
+
   </v-app>
 </template>
 
 <script>
-import JobList from './components/jobs_list.vue'
-import WorkerSelect from './components/workers_select.vue'
+//import JobList from './components/jobs_list.vue'
+//import WorkerSelect from './components/workers_select.vue'
 
 export default {
   name: 'App',
   components: {
-  JobList, WorkerSelect
+// JobList, WorkerSelect
   },
   data() {
     return {

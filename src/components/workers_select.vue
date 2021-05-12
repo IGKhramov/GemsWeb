@@ -18,7 +18,10 @@
                 >
             </v-select>
         </v-col>
-        <v-col cols="2"> <v-card  class="px-4 py-2">{{$store.state.currentWorker.name}}</v-card> </v-col>
+        <v-col cols="2"> <v-card  class="px-4 py-2"
+        :q-name="$store.state.currentWorker.name"
+        >
+        {{$store.state.currentWorker.name}}</v-card> </v-col>
         <v-col cols="7"> <v-card  align="start" class="px-4 py-2">{{currentWorker}}</v-card> </v-col>
         </v-row>
     </v-container>
@@ -27,7 +30,7 @@
 <script>
 export default {
   name: 'WorkerSelect',
-  props: {
+  props:  {
 
   },
   data() {

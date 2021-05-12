@@ -5,7 +5,9 @@ import {getWorkers} from "./actions/workers";
 
 Vue.use(Vuex)
 
-export const gemStore = new Vuex.Store({
+//export const gemStore = new Vuex.Store({
+export const gemStore = {
+    namespaced: true,
     state: {
         count: 0,
         workers: [],
@@ -39,4 +41,5 @@ export const gemStore = new Vuex.Store({
         getWorkers,
         getJobs
     }
-});
+};
+//);

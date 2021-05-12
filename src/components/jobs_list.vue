@@ -30,7 +30,7 @@
                              </v-col>
                          </v-row>
                      </v-container></td>
-                <td  align="start">{{item.description}}</td>
+                <td  align="start" v-bind="'q-' + item.description">{{item.description}}</td>
                 <td  align="start" class="text-sm-caption">{{item.startdts.toISOString().replace(/([TZ]|.000)/g, " ")}}</td>
                 <td  align="start" class="text-sm-caption">{{item.enddts?item.enddts.toISOString().replace(/([TZ]|.000)/g, " "):""}}</td>
                 <td  align="start" class="text-sm-caption">{{item.jobstatus}}</td>
