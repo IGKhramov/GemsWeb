@@ -2,9 +2,8 @@ import {apiCall, apiUrl} from "./api";
 
 function processGetJobs(result, state, commit) {
     if (typeof(result) == 'object') {
-        console.log(`Recived jobs: Success - ${result.success} \n  Data - ${result.data.length} rows`)
-        if (result.success === true && typeof(result.data) === 'object') {
-            //let jobs = [];
+        if (result.success && typeof(result.data) === 'object' && result.data[0] != null) {
+            console.log(`Recived jobs:\n     Success - ${result.success}\n     Data -  ${result.data} rows`)
             let re = / *\[ *[a-z 0-9]+ *\]/ig
             for (let job of result.data) {
                 let color = job.description.match(re);
@@ -21,14 +20,25 @@ function processGetJobs(result, state, commit) {
                 console.log(`   ${JSON.stringify(job)}`)
             }
         }
+        else {
+            console.log(`Recived jobs:\n     Error - ${result.success}\n     Data - ${result.data} rows`)
+            commit('populateJobs', [])
+            }
     }
     else {
+        console.log(`Recived jobs:\n     Error - ${result.success}\n     Data - ${result.data} rows`)
         commit('populateJobs', [])
     }
 }
 
 
 export async function getJobs({commit, state}) {
-    return apiCall(apiUrl+'jobs', {searchParams: {workerid: state.currentWorker.id}})
+    const from = state.dates[0];
+    const to = state.dates.length>1? state.dates[1]: new Date().toISOString().substr(0, 10);
+    var params = {workerid: state.currentWorker.id,
+        start: from,
+        end: to
+        }
+    return apiCall(apiUrl+'jobs', {searchParams: params})
         .then(response => processGetJobs(response, state, commit));
 }

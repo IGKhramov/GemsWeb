@@ -1,52 +1,22 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router'
 
-//import HomePage from '../home/HomePage'
 import LoginPage from '../components/login'
-import Foo from '../components/foo'
+import Home from '../components/home'
 
 Vue.use(VueRouter)
 
-const Home = { template: '<div>HOME</div>' }
-//const Foo = { template: '<div>foo</div>' }
-const Bar = { template: '<div>bar</div>' }
-
-// 2. Define some routes
-// Each route should map to a component. The "component" can
-// either be an actual component constructor created via
-// `Vue.extend()`, or just a component options object.
-// We'll talk about nested routes later.
 const routes = [
   { path: '/', component: Home },
-  { path: '/foo', component: Foo },
-  { path: '/bar', component: Bar },
-
- //   { path: '/', component: HomePage },
-    { path: '/login', component: LoginPage },
-//    { path: '/register', component: RegisterPage },
-
+  { path: '/login', component: LoginPage },
     // otherwise redirect to home
     { path: '*', redirect: '/' }
 ]
 
-// 3. Create the router instance and pass the `routes` option
-// You can pass in additional options here, but let's
-// keep it simple for now.
-//const router = new VueRouter({
-//  routes // short for `routes: routes`
-//})
-
-// 4. Create and mount the root instance.
-// Make sure to inject the router with the router option to make the
-// whole app router-aware.
-//const app = new Vue({
-//  router
-//}).$mount('#app')
-
 
 const router = new VueRouter({
     mode: 'history',
-    base: '/',
+    base: process.env.NODE_ENV === 'production' ? '/gems/' : '/',
     routes
 });
 
@@ -57,6 +27,7 @@ router.beforeEach((to, from, next) => {
   const publicPages = ['/login', '/register', '/foo'];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem('user');
+  console.log(authRequired, loggedIn)
 
   if (authRequired && !loggedIn) {
     return next('/login');

@@ -1,10 +1,12 @@
 import { authHeader } from '../js/auth.header';
+import {authUrl} from "../store/actions/api";
+//import { apiCall } from './api';
 
 export const userService = {
     login,
     logout,
 //    register,
-    getAll,
+    getAll
 //    getById,
 //    update,
 //    delete: _delete
@@ -20,11 +22,11 @@ function login(username, password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        protocol:'http:',
 //        body: JSON.stringify({ grant_type, username, password, client_id, client_secret})
         body: formBody
     };
-
-    return fetch(`http://192.168.10.33:10080/auth/login`, requestOptions)
+    return fetch(authUrl + `login`, requestOptions)
         .then(handleResponse)
         .then(user => {
             // login successful if there's a jwt token in the response
@@ -57,11 +59,11 @@ function logout() {
 function getAll() {
     const requestOptions = {
         method: 'GET',
-        headers: authHeader()
+        headers: {...{ 'Content-Type': 'application/json' },...authHeader()}
     };
-
-    return fetch(`/users`, requestOptions).then(handleResponse);
+    return fetch(`/v2/users`, requestOptions).then(handleResponse);
 }
+
 
 //
 //function getById(id) {

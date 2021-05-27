@@ -9,13 +9,14 @@ const state = user
 
 const actions = {
     login({ dispatch, commit }, { username, password }) {
+    console.log(`Starting login: ${username} : ${password}`)
         commit('loginRequest', { username });
 
         userService.login(username, password)
             .then(
                 user => {
                     commit('loginSuccess', user);
-                    router.push('/foo');
+                    router.push('/home');
                 },
                 error => {
                     commit('loginFailure', error);

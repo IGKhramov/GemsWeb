@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app  class="grey lighten-4 pa-0 ma-0" >
 
     <v-app-bar
       app
@@ -8,56 +8,45 @@
       <div class="d-flex">
         <v-img
           alt="Crystalls Logo"
-          class="shrink mr-1 ml-1"
+          class="shrink mr-6 ml-1"
           contain
           :src="logo"
           transition="scale-transition"
           width="90"
         />
-
         <v-card-text class="text-overline align-left blue--text text--lighten-2">Crystalls 4 Dress</v-card-text>
       </div>
 
       <v-spacer/>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
+      <v-btn text>
+        <span class="mx-2" v-if="status.loggedIn">|</span>
+        <span class="mr-0" v-if="status.loggedIn">{{$store.state.gemStore.currentUser.name}}</span>
+        <span class="mx-2" v-if="status.loggedIn">|</span>
+      </v-btn>
+
+      <v-btn v-if="status.loggedIn"
+        v-on:click="logout_"
         text>
-        <span class="mr-2">Latest Release</span>
+        <span class="mr-1" v-if="status.loggedIn">Loguot</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
+
+       <v-btn text v-else>
+        <span class="mr-1">You are not logged in</span>
+        <v-icon>mdi-account-off</v-icon>
+      </v-btn>
+
     </v-app-bar>
-
-
-    <v-main>
-        <p>
-        <router-link to="/foo">Go to Foo</router-link>
-         <router-link to="/bar">Go to Bar</router-link>
-         <router-link to="/login">Logout</router-link>
-      </p>
-    <router-view></router-view>
-
-
-<!--      <v-container>
-            <v-row>
-                <WorkerSelect/>
-            </v-row>
-            <v-row>
-            <JobList/>
-                </v-row>
-        </v-container>  -->
+    <v-main class="grey lighten-4 px-0">
+    <router-view fluid class="pa-1" ></router-view>
     </v-main>
-
-
-
-
   </v-app>
 </template>
 
 <script>
 //import JobList from './components/jobs_list.vue'
-//import WorkerSelect from './components/workers_select.vue'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'App',
@@ -66,23 +55,27 @@ export default {
   },
   data() {
     return {
-        logo: "imgs/gem_logo.png"
+        logo: "./imgs/gem_logo.png",
+        loggedin: !!localStorage.getItem("user")
         }
   },
+    computed: {
+        ...mapState('account', ['status'])
+    },
   methods: {
+    ...mapActions('account', ['login', 'logout']),
+    ...mapActions('gemStore', ['getCurrent']),
+    logout_() {
+        this.logout();
+        this.$router.push("/login");
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin: 0 20px;
-  padding: 0;
-  background-color: #ffffff;
-}
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@300,400;700&&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;1,300&display=swap');
+
 </style>
