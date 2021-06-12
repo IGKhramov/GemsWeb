@@ -37,7 +37,6 @@
 
                       <v-col cols="10" sm="9" class="pt-0">
                         <v-text-field
-
                           v-model="password"
                           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                           :rules="[rules.required]"
@@ -47,7 +46,8 @@
                           placeholder="your awesome password"
                           counter
                           @click:append="show1 = !show1"
-                        ></v-text-field>
+                          autocomplete="on"
+                        />
                       </v-col>
 
                     </v-row>
@@ -59,7 +59,7 @@
                           text
                           dark
                           max-width="140"
-                          class="btn-primary my-4"
+                          class="btn-primary blue accent-3 my-4"
                           :disabled= "status.loggingIn"
                           v-on:click="handleSubmit"
                           >

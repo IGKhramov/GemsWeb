@@ -47,6 +47,8 @@
 <script>
 //import JobList from './components/jobs_list.vue'
 import { mapState, mapActions } from 'vuex'
+import { clearInterval } from 'timers'
+import {userService} from './js/user.service'
 
 export default {
   name: 'App',
@@ -59,16 +61,35 @@ export default {
         loggedin: !!localStorage.getItem("user")
         }
   },
-    computed: {
+  created() {
+    window.vm.app = this;
+    console.log("zzzzzzzzzzzzzzzzzzzzzz")
+    userService.start_timer();
+  },
+  beforeDestroy() {
+    if ( window.vm.app.timer) {
+      clearInterval ( window.vm.app.timer) // Close
+    }
+
+  },
+  computed: {
         ...mapState('account', ['status'])
     },
   methods: {
     ...mapActions('account', ['login', 'logout']),
     ...mapActions('gemStore', ['getCurrent']),
     logout_() {
+        console.log(`Logout_() runs ${this}`)
         this.logout();
         this.$router.push("/login");
+        if (window.app.timer) {
+          clearInterval (window.app.timer) // Close
+        }
+    },
+    start_() {
+      this.start_timer();
     }
+
   }
 }
 </script>

@@ -1,30 +1,38 @@
 <template>
-
-  <v-simple-table
-      dense
-      x-small>
-    <template v-slot:default>
-      <thead>
-      <tr>
-        <th class="text-left">
-          <span class="ml-16 pl-8">working interval</span>
-        </th>
-        <th class="text-left">
-          Hours
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr
-          v-for="item in intervals"
-          :key="item.startdts"
-      >
+  <v-data-table
+    :headers="headers"
+    :items="intervals"
+    item-key="startDTS"
+    v-model="selectedInterval"
+    :loading="loading"
+    loading-text="Loading... Please Wait"
+    dense
+    x-small
+    hide-default-footer
+    :hide-default-header = "intervals.length===0"
+    class="elevation-4 fill-height rounded-t-lg"
+    >
+    <template v-slot:top>
+      <div class="d-flex amber lighten-5 font-weight-bold text--accent-3 px-4 py-1 rounded-t-lg numbers" >
+        <v-icon left>mdi-timeline-clock-outline</v-icon> Intervals</div>
+      <v-text-field
+          v-model="selectedInterval"
+          label="Search (UPPER CASE ONLY)"
+          class="mx-4" style="display: none"
+      ></v-text-field>
+    </template>
+    <template v-slot:item="{item}" >
+      <tr :class="selectedInterval.indexOf(item.startDTS)>-1?'amber lighten-4':''"
+          @click="rowClicked(item)">
+        <td class="fsmall grey--text text--darken-1" align="center">{{getDate(item.startDTS)}}</td>
         <td class="fsmall" v-html="formatDate(item.startDTS, item.endDTS)"/>
         <td class="fsmall font-weight-black">{{ item.time.substr(0,5) }}</td>
+
       </tr>
-      </tbody>
     </template>
-  </v-simple-table>
+  </v-data-table>
+
+
 </template>
 
 
@@ -32,14 +40,60 @@
 export default {
   props: ['intervals'],
   name: 'TimesResList',
+  data() {
+    return {
+      search: "",
+      selectedInterval: [],
+      headers: [
+        {
+          text: "Date",
+          align: 'center',
+          sortable: true,
+          value: 'startDTS',
+          class: 'numbers-10 amber lighten-3'
+        },
+        {
+          text: "Working interval",
+          align: 'center',
+          sortable: false,
+          value: 'name',
+          class: 'numbers-10 amber lighten-3'
+        },
+        {
+          text: "Hours",
+          align: 'left',
+          sortable: false,
+          value: '',
+          class: 'numbers-10 amber lighten-3'
+        }
+        ],
+      loading: false,
+      error: null
+        }
+    },
+  computed: {},
   methods: {
     formatDate(start, end) {
-        return `<div><span class="grey--text">${start.substr(0, 10)}</span> &nbsp;&nbsp;
-                  <v-divider
-                      class="my-0 mx-6"/>
+        return `<div align="center">
                 <span class="black--text font-weight-bold">${start.substr(11, 5)}</span>
                  - <span class="black--text font-weight-bold">${end.substr(11, 5)}</span>
                 </div>`
+    },
+    getDate(start) {
+      return start.substr(0, 10)},
+    rowClicked(row) {
+      this.toggleSelection(row.startDTS);
+      console.log(row);
+    },
+    toggleSelection(keyID) {
+      if (this.selectedInterval.includes(keyID)) {
+        this.selectedInterval = this.selectedInterval.filter(
+            selectedKeyID => selectedKeyID !== keyID
+        );
+      } else {
+//        this.selectedJobs.push(keyID);
+        this.selectedInterval = [keyID];
+      }
     }
   }
 }

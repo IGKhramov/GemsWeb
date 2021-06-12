@@ -9,6 +9,7 @@ Vue.config.productionTip = false
 
 Vue.prototype.$colors = require('./js/colors.json');
 
+window.vm = {}
 
 new Vue({
   vuetify,

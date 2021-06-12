@@ -11,18 +11,21 @@
       hide-default-footer
       :hide-default-header = "gems.length===0"
       :search="search"
-      class="elevation-4 fill-height he">
+      class="elevation-4 fill-height rounded-t-lg">
     <template v-slot:top>
-      <div class="d-flex teal lighten-4 text--accent-3 px-4 py-1">Cristals</div>
+      <div class="d-flex teal lighten-5 font-weight-bold px-4 py-1 rounded-t-lg numbers">
+        <v-icon left> mdi-hexagon-slice-2 mdi-drag-variant </v-icon>
+        Cristals</div>
       <v-text-field
           v-model="selectedGems"
           label="Search (UPPER CASE ONLY)"
-          class="mx-4" style="display: none"
+          class="mx-4"
+          style="display: none"
       ></v-text-field>
     </template>
 
     <template v-slot:item="{item}" >
-      <tr :class="selectedGems.indexOf(item.code)>-1?'orange lighten-5':''"
+      <tr :class="selectedGems.indexOf(item.code)>-1?'teal lighten-5':''"
           @click="rowClicked(item)">
         <td align="start">{{item.name}}</td>
         <td align="start">{{item.code}}</td>
@@ -49,21 +52,21 @@ export default {
                 align: 'center',
                 sortable: true,
                 value: 'code',
-                class: 'blue-grey lighten-5'
+                class: 'numbers-10 teal lighten-4'
             },
             {
                 text: "Code",
                 align: 'center',
                 sortable: true,
                 value: 'name',
-                class: 'blue-grey lighten-5'
+                class: 'numbers-10 teal lighten-4'
             },
             {
                 text: "Count",
                 align: 'end',
                 sortable: true,
                 value: 'cnt',
-                class: 'blue-grey lighten-5'
+                class: 'numbers-10 teal lighten-4'
             }
           ],
         loading: false,

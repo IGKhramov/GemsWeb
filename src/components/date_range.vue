@@ -28,6 +28,8 @@
         no-title
         range
         color="blue accent-2"
+      width="270"
+        show-adjacent-months
     >
       <v-spacer></v-spacer>
       <v-btn
@@ -37,6 +39,7 @@
           text
           dark
           max-width="140"
+          max-height="30"
           class="blue-grey lighten-4 my-0 py-0"
           @click="menu = false;"
       >
@@ -49,7 +52,8 @@
           text
           dark
           min-width="80"
-          class="btn-primary my-0"
+          max-height="30"
+          class="blue accent-3 my-0"
           @click="$refs.menu.save(dates); updateStorageJobs();"
       >
         OK

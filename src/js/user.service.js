@@ -1,10 +1,12 @@
 import { authHeader } from '../js/auth.header';
 import {authUrl} from "../store/actions/api";
+import {setInterval} from "timers";
 //import { apiCall } from './api';
 
 export const userService = {
     login,
     logout,
+    start_timer,
 //    register,
     getAll
 //    getById,
@@ -13,9 +15,6 @@ export const userService = {
 };
 
 function login(username, password) {
-//    const client_id = "gem_web_ui";
-//    const client_secret = '86f3478157f4db80dd962ce83539251e51f288924f12aaa070cbd0a487704fc8';
-//    const grant_type = 'password';
 
     const formBody ="client_id=gem_web_ui&client_secret=86f3478157f4db80dd962ce83539251e51f288924f12aaa070cbd0a487704fc8&grant_type=password&username="+username+"&password="+password;
 
@@ -33,18 +32,47 @@ function login(username, password) {
             if (user.access_token) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 user.cTime = new Date();
-                user.expTime = new Date(user.cTime.getTime()+user.expires_in*3600);
+                user.expTime = new Date(user.cTime.getTime()+user.expires_in*1000);
                 localStorage.setItem('user', JSON.stringify(user));
+                start_timer();
             }
             return user;
         });
 }
 
+function start_timer() {
+    console.log(`!!!  Start Timer ${localStorage.getItem("user")}`);
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.access_token) {
+        window.app.timer = setInterval(() => {
+            check_token()
+        }, 5000);
+        return true;
+    }
+    console.log(`!!!  No user in store`);
+    return false;
+}
+
+function check_token(){
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {return}
+    const d1 = new Date();
+    const d2 = new Date(user.expTime);
+    if ( d1> d2) {
+        console.log(`Token has expired ${d2}`);
+        window.vm.app.logout_();
+    }
+    else {
+        console.log(`    expTime: ${d2}\n        Now: ${d1}`)
+    }
+}
+
 function logout() {
     // remove user from local storage to log user out
-    console.log("running logout");
+    console.log(`running logout`);
     localStorage.removeItem('user');
 }
+
 //
 //function register(user) {
 //    const requestOptions = {
@@ -56,6 +84,7 @@ function logout() {
 //    return fetch(`/users/register`, requestOptions).then(handleResponse);
 //}
 //
+
 function getAll() {
     const requestOptions = {
         method: 'GET',
@@ -63,7 +92,6 @@ function getAll() {
     };
     return fetch(`/v2/users`, requestOptions).then(handleResponse);
 }
-
 
 //
 //function getById(id) {

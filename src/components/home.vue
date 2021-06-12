@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="d-block">
+  <v-container class="d-block">
     <v-row class="d-flex ma-0 pa-0">
       <v-col cols="4" class="mt-2 pa-0">
         <span class="mx-0 py-2">Worker:</span>

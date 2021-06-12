@@ -4,7 +4,7 @@ function processGetResults(result, state, commit) {
     if (typeof(result) == 'object') {
         if (result.success && typeof(result.data) === 'object' && result.data[0] != null) {
             console.log(`Recived results:\n     Success - ${result.success}\n     Data -  ${result.data.length} rows`)
-            commit('populateResults', result.data)
+            commit('populateResults', result.data.sort((x,y) => x.startDTS - y.startDTS ))
             for (let job of state.jobs) {
                 console.log(`   ${JSON.stringify(job)}`)
             }
